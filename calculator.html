@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CalculatorApp</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <table border="1">
@@ -14,35 +14,77 @@
         </td>
       </tr>
       <tr>
-        <td><button onclick="appendToDisplay('7')">7</button></td>
-        <td><button onclick="appendToDisplay('8')">8</button></td>
-        <td><button onclick="appendToDisplay('9')">9</button></td>
-        <td><button onclick="setOperation('*')">*</button></td>
+        <td class="digitButton" onclick="digitBtnPressed(7)">7</td>
+        <td class="digitButton" onclick="digitBtnPressed(8)">8</td>
+        <td class="digitButton" onclick="digitBtnPressed(9)">9</td>
+        <td class="operatorButton" onclick="operatorBtnPressed('*')">*</td>
       </tr>
       <tr>
-        <td><button onclick="appendToDisplay('4')">4</button></td>
-        <td><button onclick="appendToDisplay('5')">5</button></td>
-        <td><button onclick="appendToDisplay('6')">6</button></td>
-        <td><button onclick="setOperation('-')">-</button></td>
+        <td class="digitButton" onclick="digitBtnPressed(4)">4</td>
+        <td class="digitButton" onclick="digitBtnPressed(5)">5</td>
+        <td class="digitButton" onclick="digitBtnPressed(6)">6</td>
+        <td class="operatorButton" onclick="operatorBtnPressed('-')">-</td>
       </tr>
       <tr>
-        <td><button onclick="appendToDisplay('1')">1</button></td>
-        <td><button onclick="appendToDisplay('2')">2</button></td>
-        <td><button onclick="appendToDisplay('3')">3</button></td>
-        <td><button onclick="setOperation('+')">+</button></td>
+        <td class="digitButton" onclick="digitBtnPressed(1)">1</td>
+        <td class="digitButton" onclick="digitBtnPressed(2)">2</td>
+        <td class="digitButton" onclick="digitBtnPressed(3)">3</td>
+        <td class="operatorButton" onclick="operatorBtnPressed('+')">+</td>
       </tr>
       <tr>
-        <td><button onclick="clearDisplay()">AC</button></td>
-        <td><button onclick="appendToDisplay('0')">0</button></td>
-        <td><button onclick="setOperation('/')">/</button></td>
-        <td></td>
+        <td colspan="2" class="digitButton" onclick="digitBtnPressed(0)">0</td>
+        <td class="ACButton" onclick="btnACPressed()">AC</td>
+        <td class="operatorButton" onclick="operatorBtnPressed('/')">/</td>
       </tr>
       <tr>
-        <td colspan="4">
-          <button style="width: 100%" onclick="calculateResult()">=</button>
+        <td colspan="4" class="operatorButton" onclick="btnEqualsPressed('=')">
+          =
         </td>
       </tr>
     </table>
-    <script src="calculator.js"></script>
+    <script>
+      var newLine = true; // Flag to indicate if a new line is being started
+      var value1;
+      var currentOperator;
+      // Function to handle digit button presses
+      function digitBtnPressed(button) {
+        if (newLine) {
+          document.getElementById("inputBox").value = button;
+          newLine = false;
+        } else {
+          document.getElementById("inputBox").value += button;
+        }
+      }
+
+      // Function to handle AC button press
+      function btnACPressed() {
+        document.getElementById("inputBox").value = "0";
+        newLine = true;
+      }
+
+      // Function to handle equals button
+      function btnEqualsPressed() {
+        var input = document.getElementById("inputBox").value;
+        try {
+          var result = eval(input);
+          document.getElementById("inputBox").value = result;
+          newLine = true;
+        } catch (error) {
+          document.getElementById("inputBox").value = "Error";
+          newLine = true;
+        }
+      }
+
+      function operatorBtnPressed(operator) {
+        var inputBox = document.getElementById("inputBox");
+        var value = inputBox.value;
+        if (value === "0" || value === "Error") {
+          inputBox.value = operator === "-" ? "-" : "";
+        } else {
+          inputBox.value += operator;
+        }
+        newLine = false;
+      }
+    </script>
   </body>
 </html>
